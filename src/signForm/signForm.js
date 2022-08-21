@@ -18,8 +18,16 @@ const SignForm = ({ details, objectMakerO }) => {
   const [department, setDepartment] = useState("general");
 
   const handleChanges = (e, setter, value) => {
-    setter(() => e.target.value);
-    objectMakerO({ ...details, [value]: e.target.value });
+    if (value === "phoneNumber") {
+      setter(e.target.value.replace(/[^0-9]/g, ""));
+      objectMakerO({
+        ...details,
+        [value]: e.target.value.replace(/[^0-9]/g, ""),
+      });
+    } else {
+      setter(() => e.target.value);
+      objectMakerO({ ...details, [value]: e.target.value });
+    }
   };
 
   return (

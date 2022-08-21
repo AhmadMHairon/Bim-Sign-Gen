@@ -40,7 +40,7 @@ const SignGen = ({ details }) => {
           </p>
           <p className="phone">
             +966 {details.phoneNumber.slice(0, 2)}{" "}
-            {details.phoneNumber.slice(2, 5)} {details.phoneNumber.slice(5)}
+            {details.phoneNumber.slice(2, 5)} {details.phoneNumber.slice(5, 9)}
           </p>
 
           <a className="links" href="https://bimventures.com/">
