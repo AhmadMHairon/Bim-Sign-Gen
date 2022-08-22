@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
 import {
   Select,
   MenuItem,
@@ -10,22 +9,27 @@ import {
 } from "@mui/material";
 
 const SignForm = ({ details, objectMakerO }) => {
-  const [fullNameE, setFullNameE] = useState("");
-  const [fullNameA, setFullNameA] = useState("");
-  const [positionE, setPositionE] = useState("");
-  const [positionA, setPositionA] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [department, setDepartment] = useState("general");
-
-  const handleChanges = (e, setter, value) => {
+  const handleChanges = (e, value) => {
     if (value === "phoneNumber") {
-      setter(e.target.value.replace(/[^0-9]/g, ""));
+      if (details.phoneNumber.trim().length === 0 && e.target.value === "0") {
+        return;
+      }
+      if (e.target.value.trim().length >= 10) {
+        return;
+      }
       objectMakerO({
         ...details,
         [value]: e.target.value.replace(/[^0-9]/g, ""),
       });
+    } else if (value === "positionA" || value === "fullNameA") {
+      objectMakerO({
+        ...details,
+        [value]: e.target.value.replace(
+          /[^\u0621-\u064A\u0660-\u0669\u066E-\u06D5\u06EE\u06EF\u06FA-\u06FC\u06FF\s]/g,
+          ""
+        ),
+      });
     } else {
-      setter(() => e.target.value);
       objectMakerO({ ...details, [value]: e.target.value });
     }
   };
@@ -34,7 +38,7 @@ const SignForm = ({ details, objectMakerO }) => {
     <div className="signFormContainer">
       <div>
         <img
-          src="https://lh6.googleusercontent.com/SvBybUPhyTeWVAlyC7y1UyumcZnLSp2WtMJ-MHQ5dQsZQwen8oeaPDff9LVeL9OZhiduD3K1sjGCR2TR5yfaRRAi35BA0wnzmiR--DzEFvnkt1hzMtGnjP3gU9__ElXso464qY8H"
+          src="https://lh3.googleusercontent.com/d/1ijGrkSvZqB7yShwLdGahLbnNInMxUiXx"
           alt="Logo"
         />
       </div>
@@ -42,8 +46,8 @@ const SignForm = ({ details, objectMakerO }) => {
       <div className="formContainer">
         <div className="inputContianer">
           <TextField
-            value={fullNameE}
-            onChange={(e) => handleChanges(e, setFullNameE, "fullNameE")}
+            value={details.fullNameE}
+            onChange={(e) => handleChanges(e, "fullNameE")}
             label="Full Name"
             size="small"
             fullWidth
@@ -51,8 +55,8 @@ const SignForm = ({ details, objectMakerO }) => {
         </div>
         <div className="inputContianer">
           <TextField
-            value={fullNameA}
-            onChange={(e) => handleChanges(e, setFullNameA, "fullNameA")}
+            value={details.fullNameA}
+            onChange={(e) => handleChanges(e, "fullNameA")}
             label="الاسم الكامل"
             size="small"
             fullWidth
@@ -64,8 +68,8 @@ const SignForm = ({ details, objectMakerO }) => {
             <Select
               labelId="select-label"
               label="department"
-              value={department}
-              onChange={(e) => handleChanges(e, setDepartment, "department")}
+              value={details.department}
+              onChange={(e) => handleChanges(e, "department")}
               defaultValue={"general"}
             >
               <MenuItem value={"general"}>General</MenuItem>
@@ -78,8 +82,8 @@ const SignForm = ({ details, objectMakerO }) => {
 
         <div className="inputContianer">
           <TextField
-            value={positionE}
-            onChange={(e) => handleChanges(e, setPositionE, "positionE")}
+            value={details.positionE}
+            onChange={(e) => handleChanges(e, "positionE")}
             label="Position"
             size="small"
             fullWidth
@@ -87,8 +91,8 @@ const SignForm = ({ details, objectMakerO }) => {
         </div>
         <div className="inputContianer">
           <TextField
-            value={positionA}
-            onChange={(e) => handleChanges(e, setPositionA, "positionA")}
+            value={details.positionA}
+            onChange={(e) => handleChanges(e, "positionA")}
             label="منصب"
             inputProps={{ sx: { color: "black" } }}
             size="small"
@@ -97,8 +101,8 @@ const SignForm = ({ details, objectMakerO }) => {
         </div>
         <div className="inputContianer">
           <TextField
-            value={phoneNumber}
-            onChange={(e) => handleChanges(e, setPhoneNumber, "phoneNumber")}
+            value={details.phoneNumber}
+            onChange={(e) => handleChanges(e, "phoneNumber")}
             label="Phone Number"
             inputProps={{ sx: { color: "black" } }}
             size="small"
